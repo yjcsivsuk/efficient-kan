@@ -1,3 +1,5 @@
+import sys
+sys.path.append("/Users/lihaoyang/GitHub/efficient-kan/src")
 import torch
 import torch.nn as nn
 from tqdm import tqdm

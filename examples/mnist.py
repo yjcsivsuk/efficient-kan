@@ -1,3 +1,5 @@
+import sys
+sys.path.append("/Users/lihaoyang/GitHub/efficient-kan/src")
 from efficient_kan import KAN
 
 # Train on MNIST
@@ -24,7 +26,8 @@ valloader = DataLoader(valset, batch_size=64, shuffle=False)
 
 # Define model
 model = KAN([28 * 28, 64, 10])
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 model.to(device)
 # Define optimizer
 optimizer = optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
