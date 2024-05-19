@@ -2,6 +2,13 @@ import torch
 import torch.nn.functional as F
 import math
 
+'''
+优化版KAN，优化在以下几个方面：
+1.内存效率提升:原始实现需要扩展所有中间变量来执行不同的激活函数，而此代码中将计算变为使用不同的基函数激活输入，然后线性组合它们。
+2.更改正则化方法:原始实现中使用的L1正则化需要对张量进行非线性操作，而此代码中变为对权重的L1正则化，这更符合神经网络中常见的正则化方法。
+3.激活函数缩放选项:原始实现中包括了每个激活函数的可学习缩放，而此代码中提供了一个参数来禁用这个特性。禁用缩放可以使模型更加高效，但有可能会影响结果。
+4.更改参数初始化方法:为了解决在MNIST数据集上的性能问题，此代码修改了参数的初始化方式，使用kaiming初始化。
+'''
 
 class KANLinear(torch.nn.Module):
     def __init__(
@@ -150,6 +157,7 @@ class KANLinear(torch.nn.Module):
             else 1.0
         )
 
+    # 线性组合不同的基函数 
     def forward(self, x: torch.Tensor):
         assert x.size(-1) == self.in_features
         original_shape = x.shape
