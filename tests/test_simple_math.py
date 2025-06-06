@@ -9,7 +9,7 @@ from efficient_kan import KAN
 
 def test_mul():
     kan = KAN([2, 2, 1], base_activation=nn.Identity)
-    optimizer = torch.optim.LBFGS(kan.parameters(), lr=1)
+    optimizer = torch.optim.LBFGS(kan.parameters(), lr=1e-2)
     with tqdm(range(100)) as pbar:
         for i in pbar:
             loss, reg_loss = None, None
@@ -32,3 +32,5 @@ def test_mul():
             pbar.set_postfix(mse_loss=loss.item(), reg_loss=reg_loss.item())
     for layer in kan.layers:
         print(layer.spline_weight)
+
+test_mul()
